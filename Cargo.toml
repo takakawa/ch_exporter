@@ -1,0 +1,16 @@
+[package]
+name = "ch_exporter"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+metrics = "0.22.3"
+metrics-exporter-prometheus = "0.14.0"
+metrics-util = "0.16.3"
+quanta = "0.12.3"
+rand = "0.8.5"
+
+
+
