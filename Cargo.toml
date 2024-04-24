@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 actix-web = {version = "4.5.1"}
-clap = { version = "4.5.4", features = ["derive"] }
+clap = { version = "4.5.4", features = ["derive","env"] }
 config = "0.14.0"
 
 metrics = "0.22.3"

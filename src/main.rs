@@ -10,16 +10,21 @@ use clap::Parser;
 #[command(version, about, long_about = None)]
 struct Args {
    
+    #[arg(long,default_value ="config/queries.yaml",env="QUERY_FILE")]
+    query_file: String,
 
-    #[arg( long)]
+    #[arg(long,default_value ="http://127.0.0.1:8123",env="CH_HOST")]
     ch_host: String,
 
        
-    #[arg( long)]
+    #[arg( long,env="CH_USER")]
     ch_user: String,
 
-    #[arg( long)]
+    #[arg( long,env="CH_PASSWORD")]
     ch_password: String,
+
+    #[arg(long, default_value_t = 8080,env="METRIC_PORT")]
+    metric_port : u16,
 
 
 }
@@ -59,7 +64,7 @@ async fn main() -> std::io::Result<()> {
     let args = Args::parse();
 
     let  builder = Config::builder()
-        .add_source(File::new("src/settings", FileFormat::Yaml))
+        .add_source(File::new(&args.query_file, FileFormat::Yaml))
         .build()
         .unwrap();
 
@@ -72,7 +77,7 @@ async fn main() -> std::io::Result<()> {
             ch_password:args.ch_password,
         ch_user:args.ch_user});
     HttpServer::new(move || App::new().app_data(data.clone()).service(metrics))
-        .bind(("127.0.0.1", 8080))?
+        .bind(("0.0.0.0", args.metric_port))?
         .run()
         .await
 }
